@@ -1,0 +1,10 @@
+*
+!*.*
+!**/*/
+!.gitignore
+.idea
+!Makefile
+.DS_Store
+**/*.out
+**/*.o
+obj
