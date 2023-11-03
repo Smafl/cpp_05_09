@@ -3,6 +3,7 @@
 #define BUREAUCRAT_HPP
 
 #include <iostream>
+#include <exception>
 
 class Bureaucrat {
 private:
@@ -17,13 +18,28 @@ public:
 
 	std::string getName() const;
 	unsigned int getGrade() const;
-	void incrementGrade();
-	void decrementGrade();
+	// void incrementGrade();
+	// void decrementGrade();
 
-	// void GradeTooHighException();
-	// void GradeTooLowException();
+	class GradeTooHighException : public std::exception {
+	public:
+		const char *what() const throw();
+	};
+
+	class GradeTooLowException : public std::exception {
+	public:
+		const char *what() const throw();
+	};
 };
 
 std::ostream &operator<<(std::ostream &o, const Bureaucrat &b);
 
 #endif // BUREAUCRAT_HPP
+
+/*
+An exception is an object of some class representing an exceptional occurrence.
+Code that detects an error (often a library) throws an object.
+A piece of code expresses desire to handle an exception by a catch clause.
+The effect of a throw is to unwind the stack until a suitable catch is found
+(in a function that directly or indirectly invoked the function that threw the exception).
+*/
