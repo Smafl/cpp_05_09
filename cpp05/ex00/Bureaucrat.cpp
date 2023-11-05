@@ -51,10 +51,8 @@ int Bureaucrat::getGrade() const {
 }
 
 void Bureaucrat::incrementGrade() {
-	if (_grade == 1) {
-		// std::cerr << 
+	if (_grade == 1)
 		throw Bureaucrat::GradeTooHighException();
-	}
 	_grade--;
 }
 
