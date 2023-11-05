@@ -31,15 +31,10 @@ AForm *Intern::makeForm(const std::string &formName, const std::string &target) 
 				case 2:
 					return new PresidentialPardonForm(target);
 				default:
-					// break;
-					throw Intern::NonexistentForm();
+					break;
 			}
 		}
 	}
-	// std::cerr << "Such form cannot be created." << std::endl;
+	std::cerr << "Such form cannot be created." << std::endl;
 	return NULL;
-}
-
-const char *Intern::NonexistentForm::what() const throw() {
-	return "Such form cannot be created.";
 }
