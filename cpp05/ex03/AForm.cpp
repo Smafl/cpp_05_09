@@ -63,7 +63,7 @@ unsigned int AForm::getGradeToExecute() const {
 
 void AForm::beSigned(const Bureaucrat &bureaucrat) {
 	if (bureaucrat.getGrade() > _gradeToSign) {
-		std::cerr << _name << " is not signed because ";	
+		std::cerr << _name << " cannot signed because ";	
 		throw AForm::GradeTooLowException();
 	}
 	_isSigned = true;

@@ -7,14 +7,17 @@ Bureaucrat::Bureaucrat() :
 	_name("Akakii Prokofievich"),
 	_grade(150) { }
 
-Bureaucrat::Bureaucrat(const std::string &name, unsigned int grade) :
+Bureaucrat::Bureaucrat(const std::string &name, int grade) :
 	_name(name) {
-	if (grade > 150)
+	if (grade > 150) {
+		std::cerr << "Cannot create a bureaucrat because ";
 		throw Bureaucrat::GradeTooHighException();
-	else if (grade < 1)
+	}
+	else if (grade < 1) {
+		std::cerr << "Cannot create a bureaucrat because ";
 		throw Bureaucrat::GradeTooLowException();
-	else
-		_grade = grade;
+	}
+	_grade = grade;
 }
 
 Bureaucrat::Bureaucrat(const Bureaucrat &other) :
@@ -25,30 +28,33 @@ Bureaucrat::~Bureaucrat() { }
 
 Bureaucrat &Bureaucrat::operator=(const Bureaucrat &other) {
 	if (this != &other) {
+		const_cast<std::string&>(_name) = other._name;
 		_grade = other._grade;
 	}
 	return *this;
 }
 
 const char *Bureaucrat::GradeTooHighException::what() const throw() {
-	return "Grade is too high";
+	return "grade is too high";
 }
 
 const char *Bureaucrat::GradeTooLowException::what() const throw() {
-	return "Grade is too low";
+	return "grade is too low";
 }
 
 std::string Bureaucrat::getName() const {
 	return _name;
 }
 
-unsigned int Bureaucrat::getGrade() const {
+int Bureaucrat::getGrade() const {
 	return _grade;
 }
 
 void Bureaucrat::incrementGrade() {
-	if (_grade == 1)
+	if (_grade == 1) {
+		// std::cerr << 
 		throw Bureaucrat::GradeTooHighException();
+	}
 	_grade--;
 }
 

@@ -10,10 +10,14 @@ Bureaucrat::Bureaucrat() :
 
 Bureaucrat::Bureaucrat(const std::string &name, unsigned int grade) :
 	_name(name) {
-	if (grade < 1)
+	if (grade > 150) {
+		std::cerr << "Cannot create a bureaucrat because ";
 		throw Bureaucrat::GradeTooHighException();
-	else if (grade > 150)
+	}
+	else if (grade < 1) {
+		std::cerr << "Cannot create a bureaucrat because ";
 		throw Bureaucrat::GradeTooLowException();
+	}
 	_grade = grade;
 }
 

@@ -8,12 +8,16 @@ Bureaucrat::Bureaucrat() :
 	_name("Akakii Prokofievich"),
 	_grade(150) { }
 
-Bureaucrat::Bureaucrat(const std::string &name, unsigned int grade) :
+Bureaucrat::Bureaucrat(const std::string &name, int grade) :
 	_name(name) {
-	if (grade < 1)
+	if (grade > 150) {
+		std::cerr << "Cannot create a bureaucrat because ";
 		throw Bureaucrat::GradeTooHighException();
-	else if (grade > 150)
+	}
+	else if (grade < 1) {
+		std::cerr << "Cannot create a bureaucrat because ";
 		throw Bureaucrat::GradeTooLowException();
+	}
 	_grade = grade;
 }
 
@@ -35,7 +39,7 @@ std::string Bureaucrat::getName() const {
 	return _name;
 }
 
-unsigned int Bureaucrat::getGrade() const {
+int Bureaucrat::getGrade() const {
 	return _grade;
 }
 
