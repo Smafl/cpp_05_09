@@ -8,7 +8,7 @@ Bureaucrat::Bureaucrat() :
 	_name("Akakii Prokofievich"),
 	_grade(150) { }
 
-Bureaucrat::Bureaucrat(const std::string &name, unsigned int grade) :
+Bureaucrat::Bureaucrat(const std::string &name, int grade) :
 	_name(name) {
 	if (grade > 150) {
 		std::cerr << "Cannot create a bureaucrat because ";
@@ -39,7 +39,7 @@ std::string Bureaucrat::getName() const {
 	return _name;
 }
 
-unsigned int Bureaucrat::getGrade() const {
+int Bureaucrat::getGrade() const {
 	return _grade;
 }
 

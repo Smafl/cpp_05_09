@@ -9,7 +9,7 @@ AForm::AForm() :
 	_gradeToSign(150),
 	_gradeToExecute(100) { }
 
-AForm::AForm(const std::string &name, unsigned int gradeToSign, unsigned int gradeToExecute) :
+AForm::AForm(const std::string &name, int gradeToSign, int gradeToExecute) :
 	_name(name),
 	_isSigned(false),
 	_gradeToSign(gradeToSign),
@@ -32,8 +32,8 @@ AForm &AForm::operator=(const AForm &other) {
 	if (this != &other) {
 		const_cast<std::string&>(_name) = other._name;
 		_isSigned = other._isSigned;
-		const_cast<unsigned int&>(_gradeToSign) = other._gradeToSign;
-		const_cast<unsigned int&>(_gradeToExecute) = other._gradeToExecute;
+		const_cast<int&>(_gradeToSign) = other._gradeToSign;
+		const_cast<int&>(_gradeToExecute) = other._gradeToExecute;
 	}
 	return *this;
 }
@@ -41,8 +41,8 @@ AForm &AForm::operator=(const AForm &other) {
 void AForm::swap(AForm &other) {
 	const_cast<std::string&>(_name).swap(const_cast<std::string&>(other._name));
 	std::swap(_isSigned, other._isSigned);
-	std::swap(const_cast<unsigned int&>(_gradeToSign), const_cast<unsigned int&>(other._gradeToSign));
-	std::swap(const_cast<unsigned int&>(_gradeToExecute), const_cast<unsigned int&>(other._gradeToExecute));
+	std::swap(const_cast<int&>(_gradeToSign), const_cast<int&>(other._gradeToSign));
+	std::swap(const_cast<int&>(_gradeToExecute), const_cast<int&>(other._gradeToExecute));
 }
 
 std::string AForm::getName() const {
@@ -53,11 +53,11 @@ bool AForm::getIsSigned() const {
 	return _isSigned;
 }
 
-unsigned int AForm::getGradeToSign() const {
+int AForm::getGradeToSign() const {
 	return _gradeToSign;
 }
 
-unsigned int AForm::getGradeToExecute() const {
+int AForm::getGradeToExecute() const {
 	return _gradeToExecute;
 }
 

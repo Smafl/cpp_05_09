@@ -10,17 +10,17 @@ class AForm;
 class Bureaucrat {
 private:
 	const std::string	_name; // const here is a subject requirement
-	unsigned int		_grade; // 1 is the highest, 150 is the lowest
+	int					_grade; // 1 is the highest, 150 is the lowest
 public:
 	Bureaucrat();
-	Bureaucrat(const std::string &name, unsigned int grade);
+	Bureaucrat(const std::string &name, int grade);
 	Bureaucrat(const Bureaucrat &other);
 	~Bureaucrat();
 
 	Bureaucrat &operator=(const Bureaucrat &other);
 
 	std::string getName() const;
-	unsigned int getGrade() const;
+	int getGrade() const;
 	void incrementGrade();
 	void decrementGrade();
 

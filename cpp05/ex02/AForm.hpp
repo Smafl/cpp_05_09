@@ -10,11 +10,11 @@ class AForm {
 private:
 	const std::string _name;
 	bool _isSigned;
-	const unsigned int _gradeToSign;
-	const unsigned int _gradeToExecute;
+	const int _gradeToSign;
+	const int _gradeToExecute;
 public:
 	AForm();
-	AForm(const std::string &name, unsigned int gradeToSign, unsigned int gradeToExecute);
+	AForm(const std::string &name, int gradeToSign, int gradeToExecute);
 	AForm(const AForm &other);
 	virtual ~AForm();
 
@@ -23,8 +23,8 @@ public:
 
 	std::string getName() const;
 	bool getIsSigned() const;
-	unsigned int getGradeToSign() const;
-	unsigned int getGradeToExecute() const;
+	int getGradeToSign() const;
+	int getGradeToExecute() const;
 
 	void beSigned(const Bureaucrat &bureaucrat);
 	virtual void execute(Bureaucrat const &executor) const = 0;
