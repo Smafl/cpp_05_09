@@ -29,8 +29,12 @@ Form::Form(const Form &other) :
 Form::~Form() { }
 
 Form &Form::operator=(const Form &other) {
-	if (this != &other)
+	if (this != &other) {
+		const_cast<std::string&>(_name) = other._name;
 		_isSigned = other._isSigned;
+		const_cast<unsigned int&>(_gradeToSign) = other._gradeToSign;
+		const_cast<unsigned int&>(_gradeToExecute) = other._gradeToExecute;
+	}
 	return *this;
 }
 
@@ -51,7 +55,7 @@ unsigned int Form::getGradeToExecute() const {
 }
 
 void Form::beSigned(const Bureaucrat &bureaucrat) {
-	if (bureaucrat.getGrade() >= _gradeToSign)
+	if (bureaucrat.getGrade() > _gradeToSign)
 		throw Form::GradeTooLowException();
 	_isSigned = true;
 }

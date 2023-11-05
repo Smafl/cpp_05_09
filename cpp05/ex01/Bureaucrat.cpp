@@ -25,7 +25,7 @@ Bureaucrat::~Bureaucrat() { }
 
 Bureaucrat &Bureaucrat::operator=(const Bureaucrat &other) {
 	if (this != &other) {
-		// const_cast<std::string&>(_name) = other._name;
+		const_cast<std::string&>(_name) = other._name;
 		_grade = other._grade;
 	}
 	return *this;
@@ -69,6 +69,6 @@ const char *Bureaucrat::GradeTooLowException::what() const throw() {
 }
 
 std::ostream &operator<<(std::ostream &o, const Bureaucrat &b) {
-	o << b.getName() << ", bureaucrat grade " << b.getGrade() << ".";
+	o << b.getName() << ", bureaucrat grade " << b.getGrade() << "." << std::endl;
 	return o;
 }
