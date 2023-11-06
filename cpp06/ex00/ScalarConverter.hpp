@@ -5,14 +5,14 @@
 #include <iostream>
 
 class ScalarConverter {
-public:
+private:
 	ScalarConverter();
 	ScalarConverter(const ScalarConverter &other);
+	ScalarConverter &operator=(const ScalarConverter &other);
+public:
 	~ScalarConverter();
 
-	ScalarConverter &operator=(const ScalarConverter &other);
-
-	
+	static void convert(const std::string &str);
 };
 
 #endif // SCALARCONVERTER_HPP
