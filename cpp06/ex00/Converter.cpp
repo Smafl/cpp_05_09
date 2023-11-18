@@ -56,7 +56,7 @@ Type getType(char *str) {
 		else
 			return DOUBLE;
 	}
-	else if (isFloat(dvalue) && (*endpnt == 'f' && str[len - 1] == 'f'))
+	else if (isFloat(dvalue) && (*endpnt == 'f' && static_cast<std::size_t>((endpnt - str)) == len - 1))
 		return FLOAT;
 	return ERROR;
 }
@@ -135,19 +135,15 @@ void ScalarConverter::convert(char *str) {
 	switch (t)
 	{
 	case CHARACTER:
-		std::cout << "char" << std::endl;
 		charConvert(str[0]);
 		break;
 	case INTEGER:
-		std::cout << "int" << std::endl;
 		intConvert(str);
 		break;
 	case FLOAT:
-		std::cout << "float" << std::endl;
 		floatConvert(str);
 		break;
 	case DOUBLE:
-		std::cout << "double" << std::endl;
 		doubleConvert(str);
 		break;
 	case OVER:
