@@ -15,27 +15,34 @@ enum Type {
 	FLOAT,
 	DOUBLE,
 	OVER,
+	NA,
 	ERROR
 };
 
-bool isFloat(double dvalue) {
+Type isFloat(double dvalue) {
 
 	if (isnan(dvalue) || isinf(dvalue))
-		return true;
-	if ((dvalue >= std::numeric_limits<float>::min() || dvalue <= std::numeric_limits<float>::max())) {
-		return true;
-	}
-	return false;
+		return FLOAT;
+	if ((dvalue >= std::numeric_limits<float>::min() && dvalue <= std::numeric_limits<float>::max()))
+		return FLOAT;
+	else
+		return OVER;
+	return NA;
 }
 
-bool isInt(double dvalue, std::size_t dot_pos) {
-	if (dot_pos == std::string::npos &&
-		(dvalue >= std::numeric_limits<int>::min() && dvalue <= std::numeric_limits<int>::max()))
-		return true;
-	return false;
+Type isInt(double dvalue, std::size_t dot_pos) {
+	if (dot_pos != std::string::npos)
+		return NA;
+	if (dvalue >= std::numeric_limits<int>::min() && dvalue <= std::numeric_limits<int>::max())
+		return INTEGER;
+	else
+		return OVER;
+	return NA;
 }
 
 Type getType(char *str) {
+	Type tempInt;
+	Type tempFloat;
 	std::size_t len = std::strlen(str);
 	if (len == 1 && !std::isdigit(str[0]))
 		return CHARACTER;
@@ -46,9 +53,11 @@ Type getType(char *str) {
 		return OVER;
 	std::string sstr(str);
 	std::size_t dot_pos = sstr.find(".");
+	tempInt = isInt(dvalue, dot_pos);
+	tempFloat = isFloat(dvalue);
 	if (*endpnt == '\0') {
-		if (isInt(dvalue, dot_pos))
-			return INTEGER;
+		if (tempInt != NA)
+			return tempInt;
 		else if (isnan(dvalue) || isinf(dvalue))
 			return DOUBLE;
 		else if (dot_pos == std::string::npos)
@@ -56,8 +65,8 @@ Type getType(char *str) {
 		else
 			return DOUBLE;
 	}
-	else if (isFloat(dvalue) && (*endpnt == 'f' && static_cast<std::size_t>((endpnt - str)) == len - 1))
-		return FLOAT;
+	else if (tempFloat != NA && (*endpnt == 'f' && static_cast<std::size_t>((endpnt - str)) == len - 1))
+		return tempFloat;
 	return ERROR;
 }
 
@@ -151,6 +160,8 @@ void ScalarConverter::convert(char *str) {
 		break;
 	case ERROR:
 		printError();
+		break;
+	case NA:
 		break;
 	}
 }
