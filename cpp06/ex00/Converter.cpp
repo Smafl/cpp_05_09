@@ -65,7 +65,7 @@ Type getType(char *str) {
 		else
 			return DOUBLE;
 	}
-	else if (tempFloat != NA && (*endpnt == 'f' && static_cast<std::size_t>((endpnt - str)) == len - 1))
+	else if (tempFloat != NA && (*endpnt == 'f' && static_cast<std::size_t>(endpnt - str) == len - 1))
 		return tempFloat;
 	return ERROR;
 }
