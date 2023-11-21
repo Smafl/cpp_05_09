@@ -10,7 +10,8 @@ endif
 INCLUDE_DIR=.
 
 SRC =		main.cpp \
-			Base.cpp
+			Base.cpp \
+			Identify.cpp
 SRC_DIR:=.
 OBJ_DIR:=obj
 OBJ:=$(addprefix $(OBJ_DIR)/,$(subst /,@,$(SRC:.cpp=.o)))

@@ -1,14 +1,5 @@
 
 #include "Base.hpp"
 
-Base *Base::generate() {
-	;
-}
+Base::~Base() { }
 
-void Base::identify(Base *p) {
-	;
-}
-
-void Base::identify(Base &p) {
-	;
-}
