@@ -3,18 +3,23 @@
 #include <iostream>
 #include <stdexcept>
 
+int foo(const Array<int> &a) {
+	return a[0] + a[1];
+}
+
 int main()
 {
 	Array<int> iArray(10);
-	Array<int> i2Array;
+	printArray(iArray);
+	Array<int> i2Array(20);
+	i2Array[3] = 51;
+	swap(iArray, i2Array);
 	i2Array = iArray;
 	Array<char> cArray(15);
 	Array<float> fArray(5);
 	try {
 		iArray[5] = 378634;
-		for (unsigned int i = 0; i != i2Array.size(); i++) {
-			std::cout << i2Array[i] << " ";
-		}
+		printArray(i2Array);
 	} catch (const std::exception &e) {
 		std::cout << e.what() << std::endl;
 	}

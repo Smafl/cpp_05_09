@@ -2,7 +2,7 @@
 NAME = array
 
 CXX = c++
-CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -Wpedantic -MMD -MP -O2
+CXXFLAGS = -Wall -Wextra -Werror -std=c++98 -Wpedantic -MMD -MP
 ifdef FSANITIZE
 	CXXFLAGS+= -g3 -fsanitize=address -DDEBUG=1
 	LDFLAGS+= -g3 -fsanitize=address

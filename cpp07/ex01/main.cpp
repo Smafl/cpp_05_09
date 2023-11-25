@@ -19,14 +19,14 @@ int main()
 	char charArray[5] = {'a', 'b', 'c', 'd', 'e'};
 
 	std::size_t len = 5;
-	::iter(intArray, len, plusOne<int>);
-	::printArray(intArray, len);
+	iter(intArray, len, plusOne<int>);
+	printArray(intArray, len);
 	Example example(10);
-	::iter(intArray, len, example);
-	::printArray(intArray, len);
-	::printArray(charArray, len);
-	::iter(charArray, len, plusOne<char>);
-	::printArray(charArray, len);
+	iter(intArray, len, example);
+	printArray(intArray, len);
+	printArray(charArray, len);
+	iter(charArray, len, plusOne<char>);
+	printArray(charArray, len);
 
 	return 0;
 }
