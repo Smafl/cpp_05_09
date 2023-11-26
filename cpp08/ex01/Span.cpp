@@ -23,9 +23,25 @@ Span &Span::operator=(const Span &other) {
 	return *this;
 }
 
+unsigned int Span::getMaxSize() const {
+	return _maxSize;
+}
+
 void Span::addNumber(int nbr) {
 	if (_maxSize > _storage.size())
 		_storage.push_back(nbr);
 	else
 		throw StorageIsFull();
+}
+
+int Span::longestSpan() {
+	std::size_t size = _storage.size();
+	if (size == 0 || size == 1)
+		throw SpanCannotBeFound();
+	std::vector<int>::iterator itMax;
+	std::vector<int>::iterator itMin;
+
+	itMax = std::max_element(_storage.begin(), _storage.end());
+	itMin = std::min_element(_storage.begin(), _storage.end());
+	return *itMax - *itMin;
 }

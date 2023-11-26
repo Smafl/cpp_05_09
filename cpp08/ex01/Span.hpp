@@ -21,12 +21,19 @@ public:
 	
 	void addNumber(int nbr);
 	// void shortestSpan();
-	// void longestSpan();
+	int longestSpan();
 
 	class StorageIsFull : public std::exception {
 	public:
 		const char *what() const throw() {
 			return "storage is full";
+		}
+	};
+
+	class SpanCannotBeFound : public std::exception {
+	public:
+		const char *what() const throw() {
+			return "Span cannot be found";
 		}
 	};
 };

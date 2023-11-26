@@ -12,7 +12,12 @@ int main()
 	} catch (const std::exception &e) {
 		std::cout << e.what() << std::endl;
 	}
-	Span big(small);
-
+	std::cout << small.longestSpan() << std::endl;
+	Span big(0);
+	try {
+		std::cout << big.longestSpan() << std::endl;
+	} catch (const std::exception &e) {
+		std::cout << e.what() << std::endl;
+	}
 	return 0;
 }
