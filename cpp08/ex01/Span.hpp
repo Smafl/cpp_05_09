@@ -11,20 +11,23 @@ private:
 	unsigned int _maxSize;
 public:
 	Span();
-	Span(unsigned int n);
+	explicit Span(unsigned int n);
 	Span(const Span &other);
 	~Span();
 
 	Span &operator=(const Span &other);
 
 	unsigned int getMaxSize() const;
+	
 	void addNumber(int nbr);
 	// void shortestSpan();
 	// void longestSpan();
 
 	class StorageIsFull : public std::exception {
 	public:
-		const char *what() const throw();
+		const char *what() const throw() {
+			return "storage is full";
+		}
 	};
 };
 
