@@ -20,22 +20,26 @@ public:
 	unsigned int getMaxSize() const;
 	
 	void addNumber(int nbr);
-	// void shortestSpan();
+	void addRange(int i);
+
+	int shortestSpan();
 	int longestSpan();
 
 	class StorageIsFull : public std::exception {
 	public:
-		const char *what() const throw() {
-			return "storage is full";
-		}
+		const char *what() const throw();
 	};
 
 	class SpanCannotBeFound : public std::exception {
 	public:
-		const char *what() const throw() {
-			return "Span cannot be found";
-		}
+		const char *what() const throw();
 	};
+
+	void printArray() const;
+
 };
+
+void seedRandomGenerator();
+int getRandNbr();
 
 #endif // SPAN_HPP
