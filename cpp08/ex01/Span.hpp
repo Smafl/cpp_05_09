@@ -3,6 +3,7 @@
 #define SPAN_HPP
 
 #include <vector>
+#include <algorithm>	// std::copy
 #include <exception>
 
 class Span {

@@ -2,7 +2,7 @@
 #include "Span.hpp"
 #include <iostream>
 #include <vector>
-#include <algorithm>	// std::copy, std::generate_n
+#include <algorithm>	// std::sort
 #include <cstdlib>		// for rand() and srand()
 #include <ctime>		// for time()
 
@@ -38,26 +38,7 @@ void Span::addNumber(int nbr) {
 		throw StorageIsFull();
 }
 
-
-template<typename SrcIt, typename DstIt>
-void copy(SrcIt begin, SrcIt end, DstIt dst) {
-	for (; begin != end; ++begin) {
-		*dst = *begin;
-		++dst;
-	}
-}
-
-/*
-int a[] = {1,2,3};
-span.addRange(a, a + 3);
-
-vector<int> v{1,2,3};
-span.addRange(v.begin(), v.end());
-
-copy(a, a + 3, v.begin());
-*/
-
-// O(size^2)
+// O(n * log n)
 int Span::shortestSpan() {
 	std::size_t size = _storage.size();
 	if (size == 0 || size == 1)
@@ -66,16 +47,13 @@ int Span::shortestSpan() {
 	int shortSpan;
 	int shortestSpan = INT_MAX;
 
-	for (std::size_t i = 0; i != size; ++i) {
-		for (std::size_t j = i + 1; j != size; ++j) {
-			if (i != j) {
-				shortSpan = std::max(_storage[i], _storage[j]) - std::min(_storage[i], _storage[j]);
-				if (shortSpan == 0)
-					return shortSpan;
-				else if (shortestSpan > shortSpan)
-					shortestSpan = shortSpan;
-			}
-		}
+	std::sort(_storage.begin(), _storage.end());
+	for (std::size_t i = 0; i != size - 1; ++i) {
+		shortSpan = _storage[i + 1] - _storage[i];
+		if (shortSpan == 0)
+			return shortSpan;
+		else if (shortestSpan > shortSpan)
+			shortestSpan = shortSpan;
 	}
 	return shortestSpan;
 }
@@ -115,3 +93,26 @@ void seedRandomGenerator() {
 int getRandNbr() {
 	return std::rand() / 100000;
 }
+
+// O(n^2)
+// int Span::shortestSpan() {
+// 	std::size_t size = _storage.size();
+// 	if (size == 0 || size == 1)
+// 		throw SpanCannotBeFound();
+
+// 	int shortSpan;
+// 	int shortestSpan = INT_MAX;
+
+// 	for (std::size_t i = 0; i != size; ++i) {
+// 		for (std::size_t j = i + 1; j != size; ++j) {
+// 			if (i != j) {
+// 				shortSpan = std::max(_storage[i], _storage[j]) - std::min(_storage[i], _storage[j]);
+// 				if (shortSpan == 0)
+// 					return shortSpan;
+// 				else if (shortestSpan > shortSpan)
+// 					shortestSpan = shortSpan;
+// 			}
+// 		}
+// 	}
+// 	return shortestSpan;
+// }
