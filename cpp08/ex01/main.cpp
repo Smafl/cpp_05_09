@@ -6,7 +6,11 @@ int main()
 {
 	Span small(200);
 	try {
-		small.addRange(20);
+		small.addNumber(20);
+		small.addNumber(20);
+		small.addNumber(20);
+		int a[] = {10, 20, 30, 40};
+		small.addRange(a, a + 4);
 		small.printArray();
 	} catch (const std::exception &e) {
 		std::cout << e.what() << std::endl;

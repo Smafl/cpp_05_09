@@ -38,14 +38,26 @@ void Span::addNumber(int nbr) {
 		throw StorageIsFull();
 }
 
-void Span::addRange(int i) {
-	seedRandomGenerator();
-	(void)i;
-	std::generate(_storage.begin(), _storage.end(), getRandNbr);
-	// std::generate_n(_storage, i, getRandNbr);
-	// _storage.insert(_storage.begin(), i, getRandNbr());
+
+template<typename SrcIt, typename DstIt>
+void copy(SrcIt begin, SrcIt end, DstIt dst) {
+	for (; begin != end; ++begin) {
+		*dst = *begin;
+		++dst;
+	}
 }
 
+/*
+int a[] = {1,2,3};
+span.addRange(a, a + 3);
+
+vector<int> v{1,2,3};
+span.addRange(v.begin(), v.end());
+
+copy(a, a + 3, v.begin());
+*/
+
+// O(size^2)
 int Span::shortestSpan() {
 	std::size_t size = _storage.size();
 	if (size == 0 || size == 1)
@@ -55,7 +67,7 @@ int Span::shortestSpan() {
 	int shortestSpan = INT_MAX;
 
 	for (std::size_t i = 0; i != size; ++i) {
-		for (std::size_t j = 1; j != size; ++j) {
+		for (std::size_t j = i + 1; j != size; ++j) {
 			if (i != j) {
 				shortSpan = std::max(_storage[i], _storage[j]) - std::min(_storage[i], _storage[j]);
 				if (shortSpan == 0)
