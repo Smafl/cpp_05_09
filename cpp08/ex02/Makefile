@@ -9,8 +9,7 @@ ifdef FSANITIZE
 endif
 INCLUDE_DIR=.
 
-SRC =		main.cpp \
-			MutantStack.cpp
+SRC =		main.cpp
 SRC_DIR:=.
 OBJ_DIR:=obj
 OBJ:=$(addprefix $(OBJ_DIR)/,$(subst /,@,$(SRC:.cpp=.o)))

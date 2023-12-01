@@ -26,8 +26,8 @@ public:
 	void addRange(It begin, It end) {
 		std::size_t oldSize = _storage.size();
 		std::size_t count = end - begin;
-		unsigned int space = _maxSize - static_cast<unsigned int>(oldSize);
-		if (space < count)
+		unsigned int spaceLeft = _maxSize - static_cast<unsigned int>(oldSize);
+		if (spaceLeft < count)
 			throw StorageIsFull();
 		_storage.resize(oldSize + count);
 		std::copy(begin, end, _storage.begin() + oldSize);
