@@ -3,16 +3,16 @@
 #include <iostream>
 #include <fstream>	// open file with ifstream
 
-int exchanging(char *input) {
+void getInputData(char *input) {
 //	ifstream constructor constructs an object and open a file
 //	this file will be closed in destructor (no need to close it manually)
 	std::ifstream inputFile(input);
 	if (inputFile.rdstate() & std::ifstream::failbit) {
-		std::cerr << "Error: could not open file." << std::endl;
-		return EXIT_FAILURE;
+		throw BtcExceptions(BtcExceptions::CANNOTOPENINPUTFILE);
 	}
 	BitcoinExchange exchangeRates;
-
+	std::string date;
+	std::string line;
 }
 
 // constructors and destructor
@@ -31,3 +31,5 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) {
 	}
 	return *this;
 }
+
+// getters

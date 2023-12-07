@@ -8,15 +8,10 @@ int main(int argc, char **argv)
 		std::cerr << "Error: expected a file with input data." << std::endl;
 		return EXIT_FAILURE;
 	}
-	if (exchanging(argv[1]) == 1)
-		return EXIT_FAILURE;
-	// BitcoinExchange bar, foo;
-	// bar["a"] = 11;
-	// bar["ab"] = 22;
-	// bar["abc"] = 33;
-	// foo = bar;
-	// std::cout << "foo contains:\n";
-	// for (std::map<char,int>::iterator it=foo.begin(); it!=foo.end(); ++it)
-	// 	std::cout << it->first << " => " << it->second << '\n';
+	try {
+		getInputData(argv[1]);
+	} catch (const BtcExceptions &e) {
+		std::cout << e.what() << std::endl;
+	}
 	return 0;
 }
