@@ -13,8 +13,7 @@ struct BtcExceptions {
 		INPUTINVALIDDATE,
 		NEGATIVEDRATE,
 		RATEOUTOFRANGE,
-		INVALIDAMOUNTBTC,
-		DATENOTFOUND
+		INVALIDAMOUNTBTC
 	};
 
 	explicit BtcExceptions(Cause cause) : cause(cause) { }
@@ -28,7 +27,6 @@ struct BtcExceptions {
 			case NEGATIVEDRATE: return "Error: exchange rate is negative.";
 			case RATEOUTOFRANGE: return "Error: exchange rate is out of range";
 			case INVALIDAMOUNTBTC: return "Error: amount of bitcoins in input file is invalid";
-			case DATENOTFOUND: return "Error: date is not found.";
 			default: return "Unknown error.";
 		}
 	}
@@ -45,7 +43,8 @@ public:
 	~BitcoinExchange();
 
 	BitcoinExchange &operator=(const BitcoinExchange &other);
-	
+
+	static void getDatabase();
 };
 
 void getInputData(char *input);
@@ -57,4 +56,7 @@ errors:
 - empty files
 - negativ rate or amount of btc
 - wrong date
+- take error from subject ?
+
+- check subject for input requarement
 */

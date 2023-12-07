@@ -9,6 +9,7 @@ int main(int argc, char **argv)
 		return EXIT_FAILURE;
 	}
 	try {
+		BitcoinExchange::getDatabase();
 		getInputData(argv[1]);
 	} catch (const BtcExceptions &e) {
 		std::cout << e.what() << std::endl;
