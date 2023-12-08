@@ -4,6 +4,7 @@
 #include <fstream>	// open file with ifstream
 #include <time.h>	// strptime
 #include <string>	// c_str
+#include <sstream>	// std::istringstream
 
 void getInputData(char *input) {
 //	ifstream constructor constructs an object and open a file
@@ -39,14 +40,24 @@ void BitcoinExchange::getDatabase() {
 	}
 
 	BitcoinExchange exchangeRates;
-	struct tm tmDate;
+	// struct tm tmDate;
 	std::string strDate;
-	std::string rate;
+	float rate;
 	for (std::string line; std::getline(data, line);) {
 		if (line.empty() || !line.compare("date,exchange_rate"))
 			continue;
-		strDate = line.substr(0, line.find(","));
-		if (strptime(strDate.c_str(), "%Y-%m-%d", &tmDate) == NULL)
-			throw BtcExceptions::DATAINVALIDDATE;
+		std::istringstream is;
+		if (std::getline(is, strDate, ',')) {
+			if (is >> rate)
+				_exchangeRates[strDate] = rate;
+			else {
+				std::cout << "check date" << std::endl;
+				throw BtcExceptions(BtcExceptions::INVALIDDATA);
+			}
+		}
+		else {
+			std::cout << "check getline" << std::endl;
+			throw BtcExceptions(BtcExceptions::INVALIDDATA);
+		}
 	}
 }

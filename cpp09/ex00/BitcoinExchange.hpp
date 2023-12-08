@@ -9,8 +9,8 @@ struct BtcExceptions {
 	enum Cause {
 		CANNOTOPENINPUTFILE,
 		CANNOTOPENDATABASE,
-		DATAINVALIDDATE,
-		INPUTINVALIDDATE,
+		INVALIDDATA,
+		INVALIDDATE,
 		NEGATIVEDRATE,
 		RATEOUTOFRANGE,
 		INVALIDAMOUNTBTC
@@ -22,8 +22,8 @@ struct BtcExceptions {
 		switch (cause) {
 			case CANNOTOPENINPUTFILE: return "Error: could not open input file.";
 			case CANNOTOPENDATABASE: return "Error: could not open database.";
-			case DATAINVALIDDATE: return "Error: date in database is unvalid.";
-			case INPUTINVALIDDATE: return "Error: date in input file is unvalid.";
+			case INVALIDDATA: return "Error: data in database is unvalid.";
+			case INVALIDDATE: return "Error: date in input file is unvalid.";
 			case NEGATIVEDRATE: return "Error: exchange rate is negative.";
 			case RATEOUTOFRANGE: return "Error: exchange rate is out of range";
 			case INVALIDAMOUNTBTC: return "Error: amount of bitcoins in input file is invalid";
@@ -44,7 +44,7 @@ public:
 
 	BitcoinExchange &operator=(const BitcoinExchange &other);
 
-	static void getDatabase();
+	void getDatabase();
 };
 
 void getInputData(char *input);
