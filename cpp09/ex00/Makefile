@@ -10,7 +10,8 @@ endif
 INCLUDE_DIR=.
 
 SRC =		main.cpp \
-			BitcoinExchange.cpp
+			BitcoinExchange.cpp \
+			Date.cpp
 SRC_DIR:=.
 OBJ_DIR:=obj
 OBJ:=$(addprefix $(OBJ_DIR)/,$(subst /,@,$(SRC:.cpp=.o)))

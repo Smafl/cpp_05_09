@@ -2,52 +2,24 @@
 #ifndef BITCOINEXCHANGE_HPP
 #define BITCOINEXCHANGE_HPP
 
+#include "Date.hpp"
+#include "BtcExceptions.hpp"
 #include <map>
 #include <fstream>
 
-struct BtcExceptions {
-	enum Cause {
-		CANNOTOPENINPUTFILE,
-		CANNOTOPENDATABASE,
-		INVALIDDATA,
-		INVALIDDATE,
-		NEGATIVEDRATE,
-		RATEOUTOFRANGE,
-		INVALIDAMOUNTBTC
-	};
-
-	explicit BtcExceptions(Cause cause) : cause(cause) { }
-
-	const char *what() const throw() {
-		switch (cause) {
-			case CANNOTOPENINPUTFILE: return "Error: could not open input file.";
-			case CANNOTOPENDATABASE: return "Error: could not open database.";
-			case INVALIDDATA: return "Error: data in database is unvalid.";
-			case INVALIDDATE: return "Error: date in input file is unvalid.";
-			case NEGATIVEDRATE: return "Error: exchange rate is negative.";
-			case RATEOUTOFRANGE: return "Error: exchange rate is out of range";
-			case INVALIDAMOUNTBTC: return "Error: amount of bitcoins in input file is invalid";
-			default: return "Unknown error.";
-		}
-	}
-
-	Cause cause;
-};
-
 class BitcoinExchange {
 private:
-	std::map<std::string,float> _exchangeRates;
+	std::map<Date,float> _exchangeRates;
 public:
 	BitcoinExchange();
+	explicit BitcoinExchange(const std::string &fileName);
 	BitcoinExchange(const BitcoinExchange &other);
 	~BitcoinExchange();
 
 	BitcoinExchange &operator=(const BitcoinExchange &other);
 
-	void getDatabase();
+	float getRate(const Date &date) const;
 };
-
-void getInputData(char *input);
 
 #endif // BITCOINEXCHANGE_HPP
 
@@ -57,6 +29,7 @@ errors:
 - negativ rate or amount of btc
 - wrong date
 - take error from subject ?
+- no valid dates
 
 - check subject for input requarement
 */

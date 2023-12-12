@@ -2,16 +2,15 @@
 #include "BitcoinExchange.hpp"
 #include <iostream>
 
-int main(int argc, char **argv)
+int main(int argc, char **)
 {
 	if (argc != 2) {
-		std::cerr << "Error: expected a file with input data." << std::endl;
+		std::cerr << "Error: expected a file with input data" << std::endl;
 		return EXIT_FAILURE;
 	}
 	try {
-		BitcoinExchange dataBase;
-		dataBase.getDatabase();
-		getInputData(argv[1]);
+		BitcoinExchange dataBase("tempdata.csv");
+		// std::cout << dataBase.getRate(Date(2009, 1, 5)) << std::endl;
 	} catch (const BtcExceptions &e) {
 		std::cout << e.what() << std::endl;
 	}
