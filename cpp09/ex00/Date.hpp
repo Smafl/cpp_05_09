@@ -17,7 +17,11 @@ public:
 
 	Date &operator=(const Date &other);
 	bool operator<(const Date &other) const;
-	// bool operator==(const Date &other) const;
+	bool operator==(const Date &other) const;
+
+	bool dateIsValid() const;
+	int daysInMonth() const;
+	bool isLeapYear() const;
 
 	int getYear() const;
 	int getMonth() const;

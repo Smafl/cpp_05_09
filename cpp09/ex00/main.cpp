@@ -10,7 +10,7 @@ int main(int argc, char **)
 	}
 	try {
 		BitcoinExchange dataBase("tempdata.csv");
-		// std::cout << dataBase.getRate(Date(2009, 1, 5)) << std::endl;
+		std::cout << dataBase.getRate(Date(1024,2,29)) << std::endl;
 	} catch (const BtcExceptions &e) {
 		std::cout << e.what() << std::endl;
 	}

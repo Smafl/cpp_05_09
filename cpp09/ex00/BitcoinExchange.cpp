@@ -2,11 +2,11 @@
 #include "BitcoinExchange.hpp"
 #include "BtcExceptions.hpp"
 #include <iostream>
-#include <fstream>	// open file with ifstream
+#include <fstream>	// open file with std::fstream
 #include <sstream>	// std::istringstream
 #include <map>		// find
+#include <limits>
 
-// constructors and destructor
 BitcoinExchange::BitcoinExchange() { }
 
 BitcoinExchange::BitcoinExchange(const std::string &fileName) {
@@ -15,16 +15,18 @@ BitcoinExchange::BitcoinExchange(const std::string &fileName) {
 		throw BtcExceptions(BtcExceptions::CANNOT_OPEN_DATABASE);
 
 	int count = 0;
-	for (std::string line; std::getline(data, line);) {
-		count++;
-		if (line.empty() || count == 1)
-			continue;
-		std::istringstream is(line);
-		try {
-			float rate;
+	try {
+		for (std::string line; std::getline(data, line);) {
+			count++;
+			if (line.empty() || count == 1)
+				continue;
+			std::istringstream is(line);
 			Date date;
+			float rate;
 			is >> date;
 			if (!is.good())
+				throw BtcExceptions(BtcExceptions::INVALID_DATE);
+			if (!date.dateIsValid())
 				throw BtcExceptions(BtcExceptions::INVALID_DATE);
 			std::cout << date.getYear() << " " << date.getMonth() << " " << date.getDay() << " ";
 			is.ignore(1, ',');
@@ -32,10 +34,14 @@ BitcoinExchange::BitcoinExchange(const std::string &fileName) {
 			std::cout << rate << std::endl;
 			if (!is.good() && !is.eof())
 				throw BtcExceptions(BtcExceptions::INVALID_DATA);
+			if (rate > std::numeric_limits<float>::max())
+				throw BtcExceptions(BtcExceptions::RATE_OUT_OF_RANGE);
+			if (rate < 0)
+				throw BtcExceptions(BtcExceptions::NEGATIVE_RATE);
 			_exchangeRates[date] = rate;
-		} catch (const BtcExceptions &e) {
-			std::cerr << e.what() << " in line " << count << std::endl;
 		}
+	} catch (const BtcExceptions &e) {
+		std::cerr << e.what() << " in line " << count << std::endl;
 	}
 }
 
@@ -44,7 +50,6 @@ BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) :
 
 BitcoinExchange::~BitcoinExchange() { }
 
-// operator=
 BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) {
 	if (this != &other) {
 		BitcoinExchange newObj(other);
@@ -53,8 +58,29 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) {
 	return *this;
 }
 
-float BitcoinExchange::getRate(const Date &) const {
-	return 0;
+float BitcoinExchange::getRate(const Date &date) const {
+	std::map<Date,float>::const_iterator it = _exchangeRates.lower_bound(date);
+	// std::cout << "lower_bound return: " << it->first.getYear() << "-" << it->first.getMonth() << "-" << it->first.getDay() << std::endl;
+	try {
+		if (date == it->first) {
+			// std::cout << "date == " << std::endl;
+			return it->second;
+		}
+		else if (date < it->first) {
+			// std::cout << "date < " << std::endl;
+			if (it == _exchangeRates.begin())
+				throw BtcExceptions(BtcExceptions::DATE_IS_TOO_EARLY);
+			it--;
+			return it->second;
+		}
+		else if (it == _exchangeRates.end()) {
+			// std::cout << "date == end()" << std::endl;
+			return _exchangeRates.rbegin()->second;
+		}
+	} catch (const BtcExceptions &e) {
+		std::cerr << e.what() << " => " << it->first.getYear() << "-" << it->first.getMonth() << "-" << it->first.getDay() << std::endl;
+	}
+	return it->second;
 }
 
 // void BitcoinExchange::getInputData(char *input) const {
@@ -76,31 +102,3 @@ float BitcoinExchange::getRate(const Date &) const {
 // 		}
 // 	}
 // }
-
-/*
-// map::lower_bound/upper_bound
-#include <iostream>
-#include <map>
-
-int main ()
-{
-  std::map<char,int> mymap;
-  std::map<char,int>::iterator itlow,itup;
-
-  
-  mymap['b']=40;
-  mymap['c']=60;
-  mymap['e']=100;
-
-  itlow=mymap.lower_bound ('a'); // b -> exception
-  itlow=mymap.lower_bound ('b'); // b
-  itlow=mymap.lower_bound ('c'); // c
-  itlow=mymap.lower_bound ('d'); // e
-  itlow=mymap.lower_bound ('e'); // e
-  itlow=mymap.lower_bound ('f'); // mymap::end() -> mymap.rbegin()
-std::cout << 
-  
-
-  return 0;
-}
-*/
