@@ -21,6 +21,9 @@ public:
 	float getRate(const Date &date) const;
 };
 
+void exchange(char *inputFile, BitcoinExchange &dataBase);
+void printExchange(const Date &date, float btc, BitcoinExchange &dataBase);
+
 #endif // BITCOINEXCHANGE_HPP
 
 /*

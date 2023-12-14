@@ -46,19 +46,19 @@ std::istream &operator>>(std::istream &is, Date &date) {
 	char dash;
 	is >> y;
 	if (!is.good())
-		throw BtcExceptions(BtcExceptions::INVALID_DATE);
+		throw DateException(DateException::FAILED_EXTRACTION_OPERATOR);
 	is >> dash;
 	if (dash != '-')
-		throw BtcExceptions(BtcExceptions::INVALID_DATE);
+		throw DateException(DateException::FAILED_EXTRACTION_OPERATOR);
 	is >> m;
 	if (!is.good())
-		throw BtcExceptions(BtcExceptions::INVALID_DATE);
+		throw DateException(DateException::FAILED_EXTRACTION_OPERATOR);
 	is >> dash;
 	if (dash != '-')
-		throw BtcExceptions(BtcExceptions::INVALID_DATE);
+		throw DateException(DateException::FAILED_EXTRACTION_OPERATOR);
 	is >> d;
 	if (!is.good())
-		throw BtcExceptions(BtcExceptions::INVALID_DATE);
+		throw DateException(DateException::FAILED_EXTRACTION_OPERATOR);
 	date = Date(y, m, d);
 	return is;
 }

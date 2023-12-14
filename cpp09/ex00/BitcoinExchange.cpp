@@ -11,8 +11,8 @@ BitcoinExchange::BitcoinExchange() { }
 
 BitcoinExchange::BitcoinExchange(const std::string &fileName) {
 	std::fstream data(fileName);
-	if (data.rdstate() & std::ifstream::failbit)
-		throw BtcExceptions(BtcExceptions::CANNOT_OPEN_DATABASE);
+	if (!data.good())
+		throw DataBaseException(DataBaseException::CANNOT_OPEN_DATABASE);
 
 	int count = 0;
 	try {
@@ -23,24 +23,30 @@ BitcoinExchange::BitcoinExchange(const std::string &fileName) {
 			std::istringstream is(line);
 			Date date;
 			float rate;
-			is >> date;
+			try {
+				is >> date;
+			} catch (const DateException &e) {
+				;
+			}
 			if (!is.good())
-				throw BtcExceptions(BtcExceptions::INVALID_DATE);
+				throw DataBaseException(DataBaseException::INVALID_DATE);
 			if (!date.dateIsValid())
-				throw BtcExceptions(BtcExceptions::INVALID_DATE);
-			std::cout << date.getYear() << " " << date.getMonth() << " " << date.getDay() << " ";
+				throw DataBaseException(DataBaseException::INVALID_DATE);
+			// std::cout << date.getYear() << " " << date.getMonth() << " " << date.getDay() << " ";
 			is.ignore(1, ',');
 			is >> rate;
-			std::cout << rate << std::endl;
+			// std::cout << rate << std::endl;
 			if (!is.good() && !is.eof())
-				throw BtcExceptions(BtcExceptions::INVALID_DATA);
+				throw DataBaseException(DataBaseException::INVALID_DATA);
 			if (rate > std::numeric_limits<float>::max())
-				throw BtcExceptions(BtcExceptions::RATE_OUT_OF_RANGE);
+				throw DataBaseException(DataBaseException::RATE_OUT_OF_RANGE);
 			if (rate < 0)
-				throw BtcExceptions(BtcExceptions::NEGATIVE_RATE);
+				throw DataBaseException(DataBaseException::NEGATIVE_RATE);
 			_exchangeRates[date] = rate;
 		}
-	} catch (const BtcExceptions &e) {
+		if (count == 0 || count == 1)
+			throw DataBaseException(DataBaseException::EMPTY_DATABASE);
+	} catch (const DataBaseException &e) {
 		std::cerr << e.what() << " in line " << count << std::endl;
 	}
 }
@@ -69,7 +75,7 @@ float BitcoinExchange::getRate(const Date &date) const {
 		else if (date < it->first) {
 			// std::cout << "date < " << std::endl;
 			if (it == _exchangeRates.begin())
-				throw BtcExceptions(BtcExceptions::DATE_IS_TOO_EARLY);
+				throw InputDataException(InputDataException::DATE_IS_TOO_EARLY);
 			it--;
 			return it->second;
 		}
@@ -77,28 +83,56 @@ float BitcoinExchange::getRate(const Date &date) const {
 			// std::cout << "date == end()" << std::endl;
 			return _exchangeRates.rbegin()->second;
 		}
-	} catch (const BtcExceptions &e) {
+	} catch (const InputDataException &e) {
 		std::cerr << e.what() << " => " << it->first.getYear() << "-" << it->first.getMonth() << "-" << it->first.getDay() << std::endl;
 	}
 	return it->second;
 }
 
-// void BitcoinExchange::getInputData(char *input) const {
-// //	ifstream constructor constructs an object and open a file
-// //	this file will be closed in destructor (no need to close it manually)
-// 	std::ifstream inputFile(input);
-// 	if (inputFile.rdstate() & std::ifstream::failbit)
-// 		throw BtcExceptions(BtcExceptions::CANNOT_OPEN_INPUTFILE);
+void exchange(char *inputFile, BitcoinExchange &dataBase) {
+//	ifstream constructor constructs an object and open a file
+//	this file will be closed in destructor (no need to close it manually)
+	std::ifstream input(inputFile);
+	if (!input.good())
+		throw InputDataException(InputDataException::CANNOT_OPEN_INPUTFILE);
 
-// 	std::string date;
-// 	float nbrBtc;
-// 	for (std::string line; std::getline(inputFile, line);) {
-// 		if (line.empty() || !line.compare("date | value"))
-// 			continue;
-// 		std::istringstream is(line);
-// 		if (std::getline(is, date, '|')) {
-// 			std::map<std::string,float>::iterator it = _exchangeRates.find(date);
-// 			// if (it == _exchangeRates.end()) // not found
-// 		}
-// 	}
-// }
+	int count = 0;
+	for (std::string line; std::getline(input, line);) {
+		try {
+			count++;
+			if (line.empty() || count == 1)
+				continue;
+			std::istringstream is(line);
+			Date date;
+			float btc;
+			try {
+				is >> date;
+			} catch (const DateException &e) {
+				;
+			}
+			if (!is.good())
+				throw InputDataException(InputDataException::BAD_INPUT);
+			if (!date.dateIsValid())
+				throw InputDataException(InputDataException::BAD_INPUT);
+			// std::cout << date.getYear() << " " << date.getMonth() << " " << date.getDay() << " ";
+			is.ignore(3, '|');
+			is >> btc;
+			if (!is.good() && !is.eof())
+				throw InputDataException(InputDataException::BAD_INPUT);
+			if (btc > 1000)
+				throw InputDataException(InputDataException::BTC_OUT_OF_RANGE);
+			if (btc < 0)
+				throw InputDataException(InputDataException::NEGATIVE_AMOUNT_BTC);
+			// std::cout << btc << std::endl;
+			printExchange(date, btc, dataBase);
+		} catch (const InputDataException &e) {
+			std::cerr << e.what() << std::endl;
+		}
+	}
+}
+
+void printExchange(const Date &date, float btc, BitcoinExchange &dataBase) {
+	std::cout << date.getYear() << "-" << date.getMonth() << "-" << date.getDay();
+	std::cout << " => " << btc << " = ";
+	std::cout << dataBase.getRate(date) * btc << std::endl;
+}
