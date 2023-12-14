@@ -12,7 +12,7 @@ BitcoinExchange::BitcoinExchange() { }
 BitcoinExchange::BitcoinExchange(const std::string &fileName) {
 	std::fstream data(fileName);
 	if (!data.good())
-		throw DataBaseException(DataBaseException::CANNOT_OPEN_DATABASE);
+		throw OpenFileException(OpenFileException::DATABASE);
 
 	int count = 0;
 	try {
@@ -29,25 +29,25 @@ BitcoinExchange::BitcoinExchange(const std::string &fileName) {
 				;
 			}
 			if (!is.good())
-				throw DataBaseException(DataBaseException::INVALID_DATE);
+				throw DataBaseException(DataBaseException::INVALID_DATE, count);
 			if (!date.dateIsValid())
-				throw DataBaseException(DataBaseException::INVALID_DATE);
+				throw DataBaseException(DataBaseException::INVALID_DATE, count);
 			// std::cout << date.getYear() << " " << date.getMonth() << " " << date.getDay() << " ";
 			is.ignore(1, ',');
 			is >> rate;
 			// std::cout << rate << std::endl;
 			if (!is.good() && !is.eof())
-				throw DataBaseException(DataBaseException::INVALID_DATA);
+				throw DataBaseException(DataBaseException::INVALID_DATA, count);
 			if (rate > std::numeric_limits<float>::max())
-				throw DataBaseException(DataBaseException::RATE_OUT_OF_RANGE);
+				throw DataBaseException(DataBaseException::RATE_OUT_OF_RANGE, count);
 			if (rate < 0)
-				throw DataBaseException(DataBaseException::NEGATIVE_RATE);
+				throw DataBaseException(DataBaseException::NEGATIVE_RATE, count);
 			_exchangeRates[date] = rate;
 		}
 		if (count == 0 || count == 1)
-			throw DataBaseException(DataBaseException::EMPTY_DATABASE);
+			throw DataBaseException(DataBaseException::EMPTY_DATABASE, count);
 	} catch (const DataBaseException &e) {
-		std::cerr << e.what() << " in line " << count << std::endl;
+		;
 	}
 }
 
@@ -94,7 +94,7 @@ void exchange(char *inputFile, BitcoinExchange &dataBase) {
 //	this file will be closed in destructor (no need to close it manually)
 	std::ifstream input(inputFile);
 	if (!input.good())
-		throw InputDataException(InputDataException::CANNOT_OPEN_INPUTFILE);
+		throw OpenFileException(OpenFileException::INPUTFILE);
 
 	int count = 0;
 	for (std::string line; std::getline(input, line);) {
@@ -126,7 +126,7 @@ void exchange(char *inputFile, BitcoinExchange &dataBase) {
 			// std::cout << btc << std::endl;
 			printExchange(date, btc, dataBase);
 		} catch (const InputDataException &e) {
-			std::cerr << e.what() << std::endl;
+			;
 		}
 	}
 }

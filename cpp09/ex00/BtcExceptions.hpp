@@ -2,9 +2,27 @@
 #ifndef BTCEXCEPTIONS_HPP
 #define BTCEXCEPTIONS_HPP
 
+struct OpenFileException {
+	enum File {
+		DATABASE,
+		INPUTFILE
+	};
+
+	File file;
+
+	explicit OpenFileException(File file) : file(file) { }
+
+	const char *what() const throw() {
+		switch (file) {
+			case DATABASE: return "Error: could not open database";
+			case INPUTFILE: return "Error: could not open input file";
+			default: return "Unknown error";
+		}
+	}
+};
+
 struct DataBaseException {
 	enum Cause {
-		CANNOT_OPEN_DATABASE,
 		EMPTY_DATABASE,
 		INVALID_DATE,
 		INVALID_DATA,
@@ -12,11 +30,15 @@ struct DataBaseException {
 		RATE_OUT_OF_RANGE
 	};
 
-	explicit DataBaseException(Cause cause) : cause(cause) { }
+	Cause cause;
+	int line;
+
+	explicit DataBaseException(Cause cause, int line) :
+		cause(cause),
+		line(line) { }
 
 	const char *what() const throw() {
 		switch (cause) {
-			case CANNOT_OPEN_DATABASE: return "Error: could not open database";
 			case EMPTY_DATABASE: return "Error: database is empty";
 			case INVALID_DATE: return "Error: date in database is unvalid";
 			case INVALID_DATA: return "Error: data in database is unvalid";
@@ -25,24 +47,22 @@ struct DataBaseException {
 			default: return "Unknown error";
 		}
 	}
-
-	Cause cause;
 };
 
 struct InputDataException {
 	enum Cause {
-		CANNOT_OPEN_INPUTFILE,
 		BAD_INPUT,
 		DATE_IS_TOO_EARLY,
 		NEGATIVE_AMOUNT_BTC,
 		BTC_OUT_OF_RANGE
 	};
 
+	Cause cause;
+
 	explicit InputDataException(Cause cause) : cause(cause) { }
 
 	const char *what() const throw() {
 		switch (cause) {
-			case CANNOT_OPEN_INPUTFILE: return "Error: could not open input file";
 			case BAD_INPUT: return "Error: bad input";
 			case DATE_IS_TOO_EARLY: return "Error: rate on this date does not exist yet";
 			case NEGATIVE_AMOUNT_BTC: return "Error: not a positive number";
@@ -50,14 +70,14 @@ struct InputDataException {
 			default: return "Unknown error";
 		}
 	}
-
-	Cause cause;
 };
 
 struct DateException {
 	enum Cause {
 		FAILED_EXTRACTION_OPERATOR
 	};
+
+	Cause cause;
 
 	explicit DateException(Cause cause) : cause(cause) { }
 
@@ -68,8 +88,6 @@ struct DateException {
 			default: return "Unknown error";
 		}
 	}
-
-	Cause cause;
 };
 
 #endif // BTCEXCEPTIONS_HPP

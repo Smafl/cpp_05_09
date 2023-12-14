@@ -13,8 +13,6 @@ int main(int argc, char **argv)
 		exchange(argv[1], dataBase);
 	} catch (const DataBaseException &e) {
 		std::cout << e.what() << std::endl;
-	} catch (const InputDataException &e) {
-		std::cout << e.what() << std::endl;
 	}
 	return 0;
 }

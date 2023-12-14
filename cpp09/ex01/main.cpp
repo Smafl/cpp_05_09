@@ -8,6 +8,10 @@ int main(int argc, char **argv)
         std::cerr << "Error: expected inverted Polish mathematical expression as an argument" << std::endl;
         return 1;
     }
-    Calc result(argv[1]);
+	try {
+    	Calc result(argv[1]);
+	} catch (const Exception &e) {
+		std::cerr << e.what() << std::endl;
+	}
     return 0;
 }
