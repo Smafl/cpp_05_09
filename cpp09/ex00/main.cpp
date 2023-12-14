@@ -12,7 +12,7 @@ int main(int argc, char **argv)
 		BitcoinExchange dataBase("data.csv");
 		exchange(argv[1], dataBase);
 	} catch (const DataBaseException &e) {
-		std::cout << e.what() << std::endl;
+		std::cout << e.what() << " in line " << e.line << std::endl;
 	}
 	return 0;
 }

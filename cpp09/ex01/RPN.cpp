@@ -31,5 +31,6 @@ int Calc::top() const {
 
 void Calc::printStack() const {
 	std::size_t size = _st.size();
-	for (std::stack<int>::container_type::iterator it;)
+	
+	for (std::stack<int>::container_type::iterator it = _st.c.begin();)
 }

@@ -58,8 +58,11 @@ struct InputDataException {
 	};
 
 	Cause cause;
+	std::string str;
 
-	explicit InputDataException(Cause cause) : cause(cause) { }
+	explicit InputDataException(Cause cause) :
+		cause(cause),
+		str(str) { }
 
 	const char *what() const throw() {
 		switch (cause) {
@@ -72,22 +75,6 @@ struct InputDataException {
 	}
 };
 
-struct DateException {
-	enum Cause {
-		FAILED_EXTRACTION_OPERATOR
-	};
-
-	Cause cause;
-
-	explicit DateException(Cause cause) : cause(cause) { }
-
-	const char *what() const throw() {
-		switch (cause)
-		{
-			case FAILED_EXTRACTION_OPERATOR: return "";
-			default: return "Unknown error";
-		}
-	}
-};
+struct DateException { };
 
 #endif // BTCEXCEPTIONS_HPP

@@ -46,19 +46,19 @@ std::istream &operator>>(std::istream &is, Date &date) {
 	char dash;
 	is >> y;
 	if (!is.good())
-		throw DateException(DateException::FAILED_EXTRACTION_OPERATOR);
+		throw DateException();
 	is >> dash;
 	if (dash != '-')
-		throw DateException(DateException::FAILED_EXTRACTION_OPERATOR);
+		throw DateException();
 	is >> m;
 	if (!is.good())
-		throw DateException(DateException::FAILED_EXTRACTION_OPERATOR);
+		throw DateException();
 	is >> dash;
 	if (dash != '-')
-		throw DateException(DateException::FAILED_EXTRACTION_OPERATOR);
+		throw DateException();
 	is >> d;
 	if (!is.good())
-		throw DateException(DateException::FAILED_EXTRACTION_OPERATOR);
+		throw DateException();
 	date = Date(y, m, d);
 	return is;
 }

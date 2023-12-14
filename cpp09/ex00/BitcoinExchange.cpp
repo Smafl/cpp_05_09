@@ -15,40 +15,36 @@ BitcoinExchange::BitcoinExchange(const std::string &fileName) {
 		throw OpenFileException(OpenFileException::DATABASE);
 
 	int count = 0;
-	try {
-		for (std::string line; std::getline(data, line);) {
-			count++;
-			if (line.empty() || count == 1)
-				continue;
-			std::istringstream is(line);
-			Date date;
-			float rate;
-			try {
-				is >> date;
-			} catch (const DateException &e) {
-				;
-			}
-			if (!is.good())
-				throw DataBaseException(DataBaseException::INVALID_DATE, count);
-			if (!date.dateIsValid())
-				throw DataBaseException(DataBaseException::INVALID_DATE, count);
-			// std::cout << date.getYear() << " " << date.getMonth() << " " << date.getDay() << " ";
-			is.ignore(1, ',');
-			is >> rate;
-			// std::cout << rate << std::endl;
-			if (!is.good() && !is.eof())
-				throw DataBaseException(DataBaseException::INVALID_DATA, count);
-			if (rate > std::numeric_limits<float>::max())
-				throw DataBaseException(DataBaseException::RATE_OUT_OF_RANGE, count);
-			if (rate < 0)
-				throw DataBaseException(DataBaseException::NEGATIVE_RATE, count);
-			_exchangeRates[date] = rate;
+	for (std::string line; std::getline(data, line);) {
+		count++;
+		if (line.empty() || count == 1)
+			continue;
+		std::istringstream is(line);
+		Date date;
+		float rate;
+		try {
+			is >> date;
+		} catch (const DateException &e) {
+			throw DataBaseException(DataBaseException::INVALID_DATE, count);
 		}
-		if (count == 0 || count == 1)
-			throw DataBaseException(DataBaseException::EMPTY_DATABASE, count);
-	} catch (const DataBaseException &e) {
-		;
+		if (!is.good())
+			throw DataBaseException(DataBaseException::INVALID_DATE, count);
+		if (!date.dateIsValid())
+			throw DataBaseException(DataBaseException::INVALID_DATE, count);
+		// std::cout << date.getYear() << " " << date.getMonth() << " " << date.getDay() << " ";
+		is.ignore(1, ',');
+		is >> rate;
+		// std::cout << rate << std::endl;
+		if (!is.good() && !is.eof())
+			throw DataBaseException(DataBaseException::INVALID_DATA, count);
+		if (rate > std::numeric_limits<float>::max())
+			throw DataBaseException(DataBaseException::RATE_OUT_OF_RANGE, count);
+		if (rate < 0)
+			throw DataBaseException(DataBaseException::NEGATIVE_RATE, count);
+		_exchangeRates[date] = rate;
 	}
+	if (count == 0 || count == 1)
+		throw DataBaseException(DataBaseException::EMPTY_DATABASE, count);
 }
 
 BitcoinExchange::BitcoinExchange(const BitcoinExchange &other) :
@@ -108,7 +104,7 @@ void exchange(char *inputFile, BitcoinExchange &dataBase) {
 			try {
 				is >> date;
 			} catch (const DateException &e) {
-				;
+				throw InputDataException(InputDataException::BAD_INPUT, );
 			}
 			if (!is.good())
 				throw InputDataException(InputDataException::BAD_INPUT);
@@ -126,7 +122,7 @@ void exchange(char *inputFile, BitcoinExchange &dataBase) {
 			// std::cout << btc << std::endl;
 			printExchange(date, btc, dataBase);
 		} catch (const InputDataException &e) {
-			;
+			std::cerr << e.what() << std::endl;
 		}
 	}
 }
