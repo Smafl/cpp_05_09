@@ -58,11 +58,9 @@ struct InputDataException {
 	};
 
 	Cause cause;
-	std::string str;
 
 	explicit InputDataException(Cause cause) :
-		cause(cause),
-		str(str) { }
+		cause(cause) { }
 
 	const char *what() const throw() {
 		switch (cause) {

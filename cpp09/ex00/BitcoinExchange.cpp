@@ -4,7 +4,6 @@
 #include <iostream>
 #include <fstream>	// open file with std::fstream
 #include <sstream>	// std::istringstream
-#include <map>		// find
 #include <limits>
 
 BitcoinExchange::BitcoinExchange() { }
@@ -31,10 +30,10 @@ BitcoinExchange::BitcoinExchange(const std::string &fileName) {
 			throw DataBaseException(DataBaseException::INVALID_DATE, count);
 		if (!date.dateIsValid())
 			throw DataBaseException(DataBaseException::INVALID_DATE, count);
-		// std::cout << date.getYear() << " " << date.getMonth() << " " << date.getDay() << " ";
 		is.ignore(1, ',');
 		is >> rate;
-		// std::cout << rate << std::endl;
+		if (is.fail())
+			throw DataBaseException(DataBaseException::INVALID_DATA, count);
 		if (!is.good() && !is.eof())
 			throw DataBaseException(DataBaseException::INVALID_DATA, count);
 		if (rate > std::numeric_limits<float>::max())
@@ -62,23 +61,17 @@ BitcoinExchange &BitcoinExchange::operator=(const BitcoinExchange &other) {
 
 float BitcoinExchange::getRate(const Date &date) const {
 	std::map<Date,float>::const_iterator it = _exchangeRates.lower_bound(date);
-	// std::cout << "lower_bound return: " << it->first.getYear() << "-" << it->first.getMonth() << "-" << it->first.getDay() << std::endl;
 	try {
-		if (date == it->first) {
-			// std::cout << "date == " << std::endl;
+		if (date == it->first)
 			return it->second;
-		}
 		else if (date < it->first) {
-			// std::cout << "date < " << std::endl;
 			if (it == _exchangeRates.begin())
 				throw InputDataException(InputDataException::DATE_IS_TOO_EARLY);
 			it--;
 			return it->second;
 		}
-		else if (it == _exchangeRates.end()) {
-			// std::cout << "date == end()" << std::endl;
+		else if (it == _exchangeRates.end())
 			return _exchangeRates.rbegin()->second;
-		}
 	} catch (const InputDataException &e) {
 		std::cerr << e.what() << " => " << it->first.getYear() << "-" << it->first.getMonth() << "-" << it->first.getDay() << std::endl;
 	}
@@ -101,16 +94,16 @@ void exchange(char *inputFile, BitcoinExchange &dataBase) {
 			std::istringstream is(line);
 			Date date;
 			float btc;
+			std::stringstream badInput;
 			try {
 				is >> date;
 			} catch (const DateException &e) {
-				throw InputDataException(InputDataException::BAD_INPUT, );
+				throw InputDataException(InputDataException::BAD_INPUT);
 			}
 			if (!is.good())
 				throw InputDataException(InputDataException::BAD_INPUT);
 			if (!date.dateIsValid())
 				throw InputDataException(InputDataException::BAD_INPUT);
-			// std::cout << date.getYear() << " " << date.getMonth() << " " << date.getDay() << " ";
 			is.ignore(3, '|');
 			is >> btc;
 			if (!is.good() && !is.eof())
@@ -119,7 +112,6 @@ void exchange(char *inputFile, BitcoinExchange &dataBase) {
 				throw InputDataException(InputDataException::BTC_OUT_OF_RANGE);
 			if (btc < 0)
 				throw InputDataException(InputDataException::NEGATIVE_AMOUNT_BTC);
-			// std::cout << btc << std::endl;
 			printExchange(date, btc, dataBase);
 		} catch (const InputDataException &e) {
 			std::cerr << e.what() << std::endl;
