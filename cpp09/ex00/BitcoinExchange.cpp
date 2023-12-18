@@ -106,6 +106,8 @@ void exchange(char *inputFile, BitcoinExchange &dataBase) {
 				throw InputDataException(InputDataException::BAD_INPUT);
 			is.ignore(3, '|');
 			is >> btc;
+			if (is.fail())
+				throw InputDataException(InputDataException::BAD_INPUT);
 			if (!is.good() && !is.eof())
 				throw InputDataException(InputDataException::BAD_INPUT);
 			if (btc > 1000)

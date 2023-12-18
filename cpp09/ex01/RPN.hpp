@@ -9,7 +9,9 @@ struct Exception {
 	enum Cause {
 		EMPTY_INPUT,
 		OUT_OF_RANGE,
-		EMPTY_STACK
+		BAD_INPUT,
+		ZERO_DIVISION,
+		LOGIC_ERROR
 	};
 
 	Cause cause;
@@ -20,7 +22,10 @@ struct Exception {
 		switch (cause) {
 			case EMPTY_INPUT: return "Error: no input";
 			case OUT_OF_RANGE: return "Error: number is out of range";
-			case EMPTY_STACK: return "Error";
+			case BAD_INPUT: return "Error: bad input"; // not int && not operator
+			case ZERO_DIVISION: return "Error: attemption to divide by zero";
+			case LOGIC_ERROR: return "Error: logic error"; // cannot give a result
+			default: return "Unknown error";
 		}
 	}
 };
@@ -36,9 +41,21 @@ public:
 
     // Calc &operator=(const Calc &other) { }
 
-	void push(int nbr);
-	void pop();
+	enum Operation {
+		ADD,
+		SUB,
+		DIV,
+		MUL,
+		NONE
+	};
+
+	// void push(int nbr);
+	// bool pop();
 	int top() const;
+
+	bool parseNbr(std::istringstream &is);
+	Operation parseOperator(std::istringstream &is);
+	bool calculation(Operation op);
 
 	void printStack() const;
 };
