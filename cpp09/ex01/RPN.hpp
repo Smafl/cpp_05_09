@@ -7,10 +7,7 @@
 
 struct Exception {
 	enum Cause {
-		EMPTY_INPUT,
-		OUT_OF_RANGE,
 		BAD_INPUT,
-		ZERO_DIVISION,
 		LOGIC_ERROR
 	};
 
@@ -20,10 +17,7 @@ struct Exception {
 
 	const char *what() const throw() {
 		switch (cause) {
-			case EMPTY_INPUT: return "Error: no input";
-			case OUT_OF_RANGE: return "Error: number is out of range";
 			case BAD_INPUT: return "Error: bad input"; // not int && not operator
-			case ZERO_DIVISION: return "Error: attemption to divide by zero";
 			case LOGIC_ERROR: return "Error: logic error"; // cannot give a result
 			default: return "Unknown error";
 		}
@@ -52,8 +46,6 @@ public:
 	bool parseNbr(std::istringstream &is);
 	Operation parseOperator(std::istringstream &is);
 	bool calculation(Operation op);
-
-	void printStack() const;
 };
 
 #endif // RPN_HPP

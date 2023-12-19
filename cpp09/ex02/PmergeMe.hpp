@@ -3,12 +3,12 @@
 #define PMERGEME_HPP
 
 #include <vector>
-#include <deque>
+#include <list>
 
 class PmergeMe {
 private:
 	std::vector<int> _vec;
-	std::deque<int> _deq;
+	std::list<int> list;
 
 public:
 	PmergeMe();
