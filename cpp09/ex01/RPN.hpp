@@ -35,11 +35,11 @@ private:
     std::stack<int> _st;
 public:
     Calc();
-    // Calc(const Calc &other) { }
+    Calc(const Calc &other);
     explicit Calc(char *input);
     ~Calc();
 
-    // Calc &operator=(const Calc &other) { }
+    Calc &operator=(const Calc &other);
 
 	enum Operation {
 		ADD,
@@ -49,10 +49,6 @@ public:
 		NONE
 	};
 
-	// void push(int nbr);
-	// bool pop();
-	int top() const;
-
 	bool parseNbr(std::istringstream &is);
 	Operation parseOperator(std::istringstream &is);
 	bool calculation(Operation op);
@@ -61,21 +57,3 @@ public:
 };
 
 #endif // RPN_HPP
-
-// move constructors in .cpp
-
-/*
-- empty string
-- out of range
-- negative
-- 3 numbers in a row
-- 2 operations in a row
-- number at the end of string without operation
-*/
-
-/*
-if operator
-	top, pop
-	calculate
-	push
-*/

@@ -2,16 +2,6 @@
 #include "RPN.hpp"
 #include <sstream>
 
-// std::pair<int, Error>
-
-// std::make_pair(8, NoError);
-
-// result = func();
-// if (result.second == NoError)
-//   // use result.first
-// else
-// 	// error handling
-
 Calc::Calc() { }
 
 Calc::Calc(char *input) {
@@ -32,9 +22,7 @@ Calc::Calc(char *input) {
 				}
 			}
 		}
-		// is.clear();
 	}
-	// printStack(); // delete
 	if (is.fail() && !is.eof())
 		throw Exception(Exception::BAD_INPUT);
 
@@ -52,10 +40,17 @@ Calc::Calc(char *input) {
 		std::cout << "Result: " << result << std::endl;
 }
 
+Calc::Calc(const Calc &other) :
+	_st(other._st) { }
+
 Calc::~Calc() { }
 
-int Calc::top() const {
-	return _st.top();
+Calc &Calc::operator=(const Calc &other) {
+	if (this != &other) {
+		Calc newObj(other);
+		newObj._st.swap(_st);
+	}
+	return *this;
 }
 
 bool Calc::calculation(Operation op) {
