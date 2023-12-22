@@ -3,6 +3,8 @@
 #define PMERGEME_HPP
 
 #include <vector>
+#include  <list>
+#include <utility>	// std::pair
 
 struct Exception {
 	enum Cause {
@@ -21,20 +23,42 @@ struct Exception {
 	}
 };
 
-class PmergeMe {
+class PmergeVector {
 private:
-	std::vector<int> _vec;
+	std::vector<int> _input;
+	std::vector<std::pair<int, int> > _pairs;
+	int _unpairInt;
+	// std::vector<int, int> _main;	
+	// std::vector<int, int> _second;
 
 public:
-	PmergeMe();
-	explicit PmergeMe(char **argv);
-	// PmergeMe(const PmergeMe &other); // to do
-	~PmergeMe();
+	PmergeVector();
+	// explicit PmergeVector(char **argv);
+	// PmergeVector(const PmergeVector &other); // to do
+	~PmergeVector();
 
-	// PmergeMe &operator(const PmergeMe &other); // to do
+	// PmergeVector &operator(const PmergeVector &other); // to do
 
+	void getInput(char **argv);
+	void makePair();
+	// void sortPair();
 	void printVector() const;
 };
+
+// class PmergeList {
+// private:
+// 	std::list<int> _list;
+
+// public:
+// 	PmergeList();
+// 	explicit PmergeList(char **argv);
+// 	// PmergeList(const PmergeList &other); // to do
+// 	~PmergeList();
+
+// 	// PmergeList &operator(const PmergeList &other); // to do
+
+// 	void printList() const;
+// };
 
 #endif // PMERGEME_HPP
 

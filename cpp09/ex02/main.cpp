@@ -8,11 +8,16 @@ int main(int argc, char **argv)
 		std::cerr << "Error: expected a positive integer sequence as argument" << std::endl;
 		return EXIT_FAILURE;
 	}
+	PmergeVector pmVector;
 	try {
-		PmergeMe array(argv);
-
+		pmVector.getInput(argv);
 		std::cout << "Before: ";
-		array.printVector();
+		pmVector.printVector();
+		std::cout << std::endl;
+		pmVector.makePair();
+
+		// PmergeList lArray(argv);
+		// lArray.printList();
 	} catch (const Exception &e) {
 		std::cerr << e.what() << std::endl;
 	}
