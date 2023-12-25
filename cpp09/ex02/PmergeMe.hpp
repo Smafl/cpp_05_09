@@ -3,8 +3,6 @@
 #define PMERGEME_HPP
 
 #include <vector>
-#include  <list>
-#include <utility>	// std::pair
 
 struct Exception {
 	enum Cause {
@@ -23,42 +21,65 @@ struct Exception {
 	}
 };
 
-class PmergeVector {
-private:
-	std::vector<int> _input;
-	std::vector<std::pair<int, int> > _pairs;
-	int _unpairInt;
-	// std::vector<int, int> _main;	
-	// std::vector<int, int> _second;
-
+class PairBase {
+protected:
+	PairBase();
+	PairBase(const PairBase &other);
+	PairBase &operator=(const PairBase &);
 public:
-	PmergeVector();
-	// explicit PmergeVector(char **argv);
-	// PmergeVector(const PmergeVector &other); // to do
-	~PmergeVector();
+	virtual ~PairBase() { } // to do
 
-	// PmergeVector &operator(const PmergeVector &other); // to do
+	virtual int getNbr() const = 0;
 
-	void getInput(char **argv);
-	void makePair();
-	// void sortPair();
-	void printVector() const;
 };
 
-// class PmergeList {
-// private:
-// 	std::list<int> _list;
+class Pair : public PairBase {
+private:
+	Pair();
+	// to do: copy + assigned
+	PairBase *_max;
+	PairBase *_min;
+public:
+	Pair(PairBase *f, PairBase *s) {
+		if (f->getNbr() > s->getNbr()) {
+			_max = f;
+			_min = s;
+		}
+		else {
+			_max = s;
+			_min = f;
+		}
+	}
+	~Pair() { } // to do
 
-// public:
-// 	PmergeList();
-// 	explicit PmergeList(char **argv);
-// 	// PmergeList(const PmergeList &other); // to do
-// 	~PmergeList();
+	int getNbr () const {
+		return _max->getNbr();
+	}
 
-// 	// PmergeList &operator(const PmergeList &other); // to do
+	PairBase *getMax() const {
+		return _max;
+	}
 
-// 	void printList() const;
-// };
+	PairBase *getMin() const {
+		return _min;
+	}
+};
+
+class Unpair : public PairBase {
+private:
+	int _nbr;
+	Unpair();
+	// to do: copy + assigned
+public:
+	explicit Unpair(int nbr) : _nbr(nbr) { }
+	~Unpair() { } // to do
+
+	int getNbr() const {
+		return _nbr;
+	}
+};
+
+void sort(std::vector<int> &input);
 
 #endif // PMERGEME_HPP
 

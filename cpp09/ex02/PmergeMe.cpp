@@ -1,81 +1,49 @@
 
 #include "PmergeMe.hpp"
-#include <sstream>	// std::istringstream
-#include <iostream>	// std::cout
+#include <vector>
 
-PmergeVector::PmergeVector() :
-	_unpairInt(-1) { }
+void sort(std::vector<PairBase*> &input) {
+	std::size_t n = input.size();
+	std::vector<PairBase*> pair;
+	for (std::size_t i = 0; i + 1 < n; i += 2) {
+		Pair *p = new Pair(input[i], input[i + 1]);
+		pair.push_back(p);
+	}
+	sort(pair);
 
-PmergeVector::~PmergeVector() { }
+	std::vector<PairBase*> sorted;
+	std::vector<PairBase*> linked; // b1 b2 b3 ...
+	// b3 = linked[2]
+	// t1 = 1 -> 0
+	// t2 = 3 -> 2
+	sorted.push_back(dynamic_cast<Pair*>(pair[0])->getMin());
+	for (std::size_t i = 0; i != pair.size(); i++) {
+		sorted.push_back(dynamic_cast<Pair*>(pair[i])->getMax());
+		linked.push_back(dynamic_cast<Pair*>(pair[i])->getMin());
+		delete pair[i];
+	}
+	if (n % 2 != 0)
+		linked.push_back(input[n - 1]);
+}
 
-void PmergeVector::getInput(char **argv) {
-	int i = 1;
-	while (argv[i]) {
-		std::istringstream is(argv[i]);
-		int nbr;
-		while (is.good()) {
-			is >> nbr;
-			if (is.fail())
-				throw Exception(Exception::BAD_INPUT);
-			if (nbr < 0)
-				throw Exception(Exception::BAD_INPUT);
-			_input.push_back(nbr);
-			is >> std::ws;
-		}
-		i++;
+void sort(std::vector<int> &input) {
+	std::vector<PairBase*> pairBase;
+	for (std::vector<int>::const_iterator it = input.begin(); it != input.end(); it++) {
+		Unpair *nbr = new Unpair(*it);
+		pairBase.push_back(nbr);
+	}
+
+	sort(pairBase);
+
+	for (std::size_t i = 0; i != pairBase.size(); i++) {
+		input[i] = pairBase[i]->getNbr();
+		delete pairBase[i];
 	}
 }
 
-void PmergeVector::makePair() {
-	std::size_t lenInput = _input.size();
-	std::size_t lenPair = lenInput / 2;
-
-	for (std::size_t i = 0; lenPair != 0; lenPair--) {
-		if (_input[i] > _input[i + 1])
-			_pairs.push_back(std::make_pair(_input[i], _input[i + 1]));
-		else
-			_pairs.push_back(std::make_pair(_input[i + 1], _input[i]));
-		i += 2;
-	}
-	for (std::vector<std::pair<int, int> >::iterator it = _pairs.begin(); it != _pairs.end(); it++) { // delete
-		std::cout << "(" << it->first << "," << it->second << ")" << " ";
-	}
-	if (lenInput % 2 != 0) {
-		_unpairInt = _input[lenInput - 1];
-		std::cout << "; unpair: " << _unpairInt; // delete
-	}
-}
-
-void PmergeVector::printVector() const {
-	for (std::vector<int>::const_iterator it = _input.begin(); it != _input.end(); it++) {
-		std::cout << *it << " ";
-	}
-}
-
-// PmergeList::PmergeList() { }
-
-// PmergeList::PmergeList(char **argv) {
-// 	int i = 1;
-// 	while (argv[i]) {
-// 		std::istringstream is(argv[i]);
-// 		int nbr;
-// 		while (is.good()) {
-// 			is >> nbr;
-// 			if (is.fail())
-// 				throw Exception(Exception::BAD_INPUT);
-// 			if (nbr < 0)
-// 				throw Exception(Exception::BAD_INPUT);
-// 			_list.push_back(nbr);
-// 			is >> std::ws;
-// 		}
-// 		i++;
-// 	}
-// }
-
-// PmergeList::~PmergeList() { }
-
-// void PmergeList::printList() const {
-// 	for (std::list<int>::const_iterator it = _list.begin(); it != _list.end(); it++) {
-// 		std::cout << *it << " ";
-// 	}
-// }
+/*
+[ *     ][ *     ][ *     ]
+  |        |        |    
+  v        v        v    
+  Unpair   Unpair   Unpair
+*/
