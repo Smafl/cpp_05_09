@@ -3,7 +3,7 @@ C++ Module Projects. This collection of projects is designed to help to learn an
 
 ## ex02. Merge-insert sort or Ford-Johnson algorithm for _n_ elements:
 1. Make pairwise comparisons of ⌊n/2⌋ (if number of elements is odd, leave one element out)
-2. Sort the ⌊n/2⌋ larger numbers, using merge insertion (recursively)
+2. Sort the ⌊n/2⌋ larger numbers, using merge-insert sort (recursively)
 3. Create a sorted sequence of ⌊n/2⌋ in ascending order
 4. Insert at the start of this sequence the element that was paired with first and the smallest element
   and put in second sequence unpair element from step 1, if it exists
