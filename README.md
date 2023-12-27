@@ -10,4 +10,4 @@ C++ Module Projects. This collection of projects is designed to help to learn an
 6. Insert the remaining elements in special order, using binary insertion
    Use this for calculating this order:
    t<sub<k</sub> = (2<sup>k+1</sup> + (-1)<sup>k</sup>) /3,
-   where t<sub<k</sub> is number from which a new insertion group starts
+   where t<sub>k</sub> is number from which a new insertion group starts
