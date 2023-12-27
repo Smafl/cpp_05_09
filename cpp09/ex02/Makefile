@@ -10,7 +10,9 @@ endif
 INCLUDE_DIR=.
 
 SRC =		main.cpp \
-			PmergeMe.cpp
+			PmergeMe.cpp \
+			PmergeMeVector.cpp \
+			PmergeMeDeque.cpp
 SRC_DIR:=.
 OBJ_DIR:=obj
 OBJ:=$(addprefix $(OBJ_DIR)/,$(subst /,@,$(SRC:.cpp=.o)))
