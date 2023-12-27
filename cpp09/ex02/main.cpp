@@ -40,6 +40,7 @@ int main(int argc, char **argv)
 		getInput(input, argv);
 		printInput(input);
 		sort(input);
+		printInput(input);
 	} catch (const Exception &e) {
 		std::cerr << e.what() << std::endl;
 	}

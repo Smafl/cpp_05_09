@@ -23,8 +23,8 @@ struct Exception {
 
 class PairBase {
 protected:
-	PairBase();
-	PairBase(const PairBase &other);
+	PairBase() { };
+	// PairBase(const PairBase &other);
 	PairBase &operator=(const PairBase &);
 public:
 	virtual ~PairBase() { } // to do
