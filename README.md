@@ -12,3 +12,6 @@ C++ Module Projects. This collection of projects is designed to help to learn an
    Use this for calculating this order:
      t<sub>k</sub> = (2<sup>k+1</sup> + (-1)<sup>k</sup>) / 3,
      where t<sub>k</sub> is number from which a new insertion group starts
+
+     Insertion goes in this order:
+   b<sub>t<sub>k-1</sub>+1</sub>, b<sub>t<sub>k-1</sub>+2</sub> ...
