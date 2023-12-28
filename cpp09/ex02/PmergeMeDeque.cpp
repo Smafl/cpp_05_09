@@ -34,6 +34,8 @@ void miSortD(std::deque<PairBase*> &input) {
 	std::size_t n = input.size();
 	if (n <= 1)
 		return;
+
+//	make pairs
 	std::deque<PairBase*> pair;
 	for (std::size_t i = 0; i + 1 < n; i += 2) {
 		Pair *p = new Pair(input[i], input[i + 1]);
@@ -41,6 +43,7 @@ void miSortD(std::deque<PairBase*> &input) {
 	}
 	miSortD(pair);
 
+//	create main chain and pend chain
 	std::deque<PairBase*> sorted;
 	std::deque<PairBase*> linked;
 	sorted.push_back(dynamic_cast<Pair*>(pair[0])->getMin());
@@ -49,9 +52,12 @@ void miSortD(std::deque<PairBase*> &input) {
 		linked.push_back(dynamic_cast<Pair*>(pair[i])->getMin());
 		delete pair[i];
 	}
+
+//	push in pend chain unpair element
 	if (n % 2 != 0)
 		linked.push_back(input[n - 1]);
 
+//	insert from pend chain to main chain
 	bool flag = false;
 	for (std::size_t k = 2; !flag; k++) {
 		std::size_t tk = getTkD(k);
