@@ -38,9 +38,11 @@ Pair::~Pair() { }
 int Pair::getNbr () const {
 	return _max->getNbr();
 }
+
 PairBase *Pair::getMax() const {
 	return _max;
 }
+
 PairBase *Pair::getMin() const {
 	return _min;
 }

@@ -2,7 +2,7 @@
 #include "PmergeMe.hpp"
 #include <vector>
 
-// tk = (2^k+1 + (-1)^k) / 3
+// tk = (2^(k+1) + (-1)^k) / 3
 std::size_t getTkV(std::size_t k) {
 	if (k % 2 == 0)
 		return ((1 << (k + 1)) + 1) / 3;
